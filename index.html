@@ -764,7 +764,71 @@ header.app-header p{display:none!important}
 .finder-register-actions button{min-width:0;padding:8px 5px;font-size:11px;line-height:1.2}
 .finder-market-tools label{font-size:11px;line-height:1.2}
 @media(max-width:390px){.finder-count-toolbar{gap:4px}.finder-mini-view button{font-size:9px;padding:5px 6px}.finder-register-actions button{font-size:10px}}
-</style></head><body><header class="app-header"><h1>TCG Collection Note</h1><p>トレカのコレクション管理・相場をこのノートひとつで</p><button type="button" id="headerBackupBtn" class="header-backup-btn" aria-label="バックアップ" title="バックアップ">保存</button></header><main class="wrap"><section class="stats"><div class="stat"><small>登録カード種類</small><strong id="statKinds">0</strong><span>マイコレクション</span></div><div class="stat"><small>所持カード枚数</small><strong id="statQty">0</strong><span>登録枚数の合計</span></div><div class="stat hidden-stat"><small>取得金額（内部計算用）</small><strong id="statCost">¥0</strong></div></section>
+</style><style>
+/* v229: mobile-first market entry and compact view controls */
+.finder-market-tools{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:10px !important;
+  padding:10px !important;
+  margin-top:8px !important;
+  border:1px solid #40536a !important;
+  border-radius:12px !important;
+  background:#0b1725 !important;
+}
+.finder-market-tools label,
+.finder-market-tools .market-tools-store{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:5px !important;
+  width:100% !important;
+  margin:0 !important;
+  color:#f0f5fb !important;
+  font-size:13px !important;
+  font-weight:700 !important;
+  line-height:1.35 !important;
+}
+.finder-market-tools input,
+.finder-market-tools select{
+  display:block !important;
+  width:100% !important;
+  min-height:44px !important;
+  box-sizing:border-box !important;
+  padding:9px 12px !important;
+  border:1px solid #52677f !important;
+  border-radius:9px !important;
+  background:#111f30 !important;
+  color:#ffffff !important;
+  font-size:16px !important;
+}
+.finder-market-tools input::placeholder{color:#9eafc3 !important;opacity:1}
+.finder-market-tools .market-tools-save{
+  display:block !important;
+  width:100% !important;
+  min-height:44px !important;
+  margin:0 !important;
+  padding:10px 12px !important;
+  border:0 !important;
+  border-radius:9px !important;
+  background:#79d5e2 !important;
+  color:#08202a !important;
+  font-size:14px !important;
+  font-weight:800 !important;
+}
+.finder-count-toolbar{align-items:center !important;gap:8px !important}
+.finder-count-note{font-size:12px !important;padding:5px 8px !important;line-height:1.2 !important}
+.finder-mini-view{display:flex !important;align-items:center !important;gap:5px !important;flex-shrink:0 !important}
+.finder-mini-view button{
+  display:inline-flex !important;align-items:center !important;justify-content:center !important;
+  min-height:30px !important;min-width:42px !important;padding:5px 9px !important;
+  border:1px solid #40536a !important;border-radius:8px !important;
+  background:#1a2a3c !important;color:#edf4fc !important;
+  font-size:11px !important;font-weight:700 !important;line-height:1.1 !important;
+}
+.finder-mini-view button.active{background:#79d5e2 !important;color:#08202a !important;border-color:#79d5e2 !important}
+@media(max-width:390px){.finder-market-tools{padding:8px !important}.finder-mini-view button{min-width:38px !important;padding:5px 7px !important}}
+</style>
+</head><body><header class="app-header"><h1>TCG Collection Note</h1><p>トレカのコレクション管理・相場をこのノートひとつで</p><button type="button" id="headerBackupBtn" class="header-backup-btn" aria-label="バックアップ" title="バックアップ">保存</button></header><main class="wrap"><section class="stats"><div class="stat"><small>登録カード種類</small><strong id="statKinds">0</strong><span>マイコレクション</span></div><div class="stat"><small>所持カード枚数</small><strong id="statQty">0</strong><span>登録枚数の合計</span></div><div class="stat hidden-stat"><small>取得金額（内部計算用）</small><strong id="statCost">¥0</strong></div></section>
 <section class="panel asset-summary" id="assetTrendPanel" style="margin-top:12px;margin-bottom:0"><div class="overall-asset"><div class="overall-asset-head"><span>総資産</span><strong id="statValue">¥0</strong></div><div class="overall-asset-sub"><span>推移 <b id="trendChange">—</b></span><span>最新 <b id="trendLatest">—</b></span></div><div id="assetTrendChart" aria-label="総資産の推移グラフ"></div><small id="trendCovered">0種類</small></div><div class="game-asset-breakdown" id="gameAssetBreakdown" aria-label="タイトル別の資産価値と相場変動"><h2>タイトル別</h2><div class="game-asset-grid" id="gameAssetGrid"></div></div><div class="hidden" aria-hidden="true"><span id="statPnl">損益 —%</span></div></section>
 <nav class="tabs" id="mainTabs" aria-label="メインメニュー"><button class="tab" data-tab="search">カード検索</button><button class="tab active" data-tab="collection">マイコレクション</button><button class="tab" data-tab="more">ショップ</button></nav>
 <section id="view-search" class="hidden"><div class="panel finder-panel" id="cardFinderPanel">
@@ -1615,7 +1679,7 @@ function renderFinder(){
     const already=c.source==='collection';
     const sameNameCount=sameNameCounts.get(normalizeSearch(c.name))||0;
     const sameNameHint=sameNameCount>1?`<small class="finder-same-name-hint">同名候補 ${sameNameCount}件：番号・レアリティ・収録商品を確認</small>`:'';
-    const marketQuery=[c.name,c.number].map(x=>String(x||'').trim()).filter(Boolean).join(' ');const rushDomain=c.game==='pokemon'?'https://www.cardrush-pokemon.jp/product-list':c.game==='onepiece'?'https://www.cardrush-op.jp/product-list':'https://www.cardrush.jp/product-list';const rushUrl=rushDomain+'?keyword='+encodeURIComponent(marketQuery);const surugayaUrl='https://www.suruga-ya.jp/search?search_word='+encodeURIComponent(marketQuery);return `<article class="finder-result-card ${finderViewMode==='compact'?'finder-result-compact':''}" data-result-key="${safe(c.key)}"><button type="button" class="finder-card-select ${c.key===finderSelectedKey?'selected':''}" data-finder-key="${safe(c.key)}" aria-label="${safe(c.name)}の詳細を選択">${finderViewMode==='images'?imageMarkup(c):''}<span class="finder-card-copy"><small class="finder-series-line">${safe(c.setName||'シリーズ未登録')}${c.number?' · '+safe(c.number):''}</small><strong>${safe(c.name)}</strong>${sameNameHint}<span class="rarity-pill ${c.rarity&&c.rarity!=='未確認'?'rarity-known':'rarity-unknown'}">${safe(c.rarity&&c.rarity!=='未確認'?rarityDisplayLabel(c.game,c.rarity):'レアリティ未確認')}</span>${finderPriceHtml(c)}</span></button><div class="finder-market-links"><a href="${rushUrl}" target="_blank" rel="noopener noreferrer">カードラッシュで検索 ↗</a><a href="${surugayaUrl}" target="_blank" rel="noopener noreferrer">駿河屋で検索 ↗</a></div><div class="finder-market-tools" data-market-tools="${safe(c.key)}"><label>販売相場（円）<input type="number" min="0" step="1" inputmode="numeric" aria-label="販売相場（円）" placeholder="金額を入力" data-market-sell="${safe(c.key)}"></label><label>買取金額（円）<input type="number" min="0" step="1" inputmode="numeric" aria-label="買取金額（円）" placeholder="金額を入力" data-market-buy="${safe(c.key)}"></label><label class="market-tools-store">店舗名<input type="text" maxlength="80" placeholder="カードラッシュ / カードバリュー" data-market-store="${safe(c.key)}"></label><button type="button" class="market-tools-save" data-market-save="${safe(c.key)}">相場を保存</button></div><div class="finder-qty" aria-label="登録する枚数"><button type="button" data-qty-delta="-1" data-qty-key="${safe(c.key)}" aria-label="${safe(c.name)}の枚数を減らす">−</button><output data-qty-value="${safe(c.key)}">${qty}</output><button type="button" data-qty-delta="1" data-qty-key="${safe(c.key)}" aria-label="${safe(c.name)}の枚数を増やす">＋</button></div><div class="finder-register-actions"><button type="button" class="finder-register-btn" data-register-key="${safe(c.key)}">${already?'＋1枚追加':'マイコレ登録'}</button><button type="button" class="finder-quick-register-btn" data-detail-register-key="${safe(c.key)}">${already?'＋1枚追加':'+ 詳細登録'}</button></div></article>`;
+    const marketQuery=[c.name,c.number].map(x=>String(x||'').trim()).filter(Boolean).join(' ');const rushDomain=c.game==='pokemon'?'https://www.cardrush-pokemon.jp/product-list':c.game==='onepiece'?'https://www.cardrush-op.jp/product-list':'https://www.cardrush.jp/product-list';const rushUrl=rushDomain+'?keyword='+encodeURIComponent(marketQuery);const surugayaUrl='https://www.suruga-ya.jp/search?search_word='+encodeURIComponent(marketQuery);return `<article class="finder-result-card ${finderViewMode==='compact'?'finder-result-compact':''}" data-result-key="${safe(c.key)}"><button type="button" class="finder-card-select ${c.key===finderSelectedKey?'selected':''}" data-finder-key="${safe(c.key)}" aria-label="${safe(c.name)}の詳細を選択">${finderViewMode==='images'?imageMarkup(c):''}<span class="finder-card-copy"><small class="finder-series-line">${safe(c.setName||'シリーズ未登録')}${c.number?' · '+safe(c.number):''}</small><strong>${safe(c.name)}</strong>${sameNameHint}<span class="rarity-pill ${c.rarity&&c.rarity!=='未確認'?'rarity-known':'rarity-unknown'}">${safe(c.rarity&&c.rarity!=='未確認'?rarityDisplayLabel(c.game,c.rarity):'レアリティ未確認')}</span>${finderPriceHtml(c)}</span></button><div class="finder-market-links"><a href="${rushUrl}" target="_blank" rel="noopener noreferrer">カードラッシュで検索 ↗</a><a href="${surugayaUrl}" target="_blank" rel="noopener noreferrer">駿河屋で検索 ↗</a></div><div class="finder-market-tools" data-market-tools="${safe(c.key)}"><label>販売相場（円）<input type="number" min="0" step="1" inputmode="numeric" aria-label="販売相場（円）" placeholder="金額を入力" data-market-sell="${safe(c.key)}"></label><label>買取相場（円）<input type="number" min="0" step="1" inputmode="numeric" aria-label="買取相場（円）" placeholder="金額を入力" data-market-buy="${safe(c.key)}"></label><label class="market-tools-store">店舗名<input type="text" maxlength="80" placeholder="カードラッシュ / カードバリュー" data-market-store="${safe(c.key)}"></label><button type="button" class="market-tools-save" data-market-save="${safe(c.key)}">相場を保存</button></div><div class="finder-qty" aria-label="登録する枚数"><button type="button" data-qty-delta="-1" data-qty-key="${safe(c.key)}" aria-label="${safe(c.name)}の枚数を減らす">−</button><output data-qty-value="${safe(c.key)}">${qty}</output><button type="button" data-qty-delta="1" data-qty-key="${safe(c.key)}" aria-label="${safe(c.name)}の枚数を増やす">＋</button></div><div class="finder-register-actions"><button type="button" class="finder-register-btn" data-register-key="${safe(c.key)}">${already?'＋1枚追加':'マイコレ登録'}</button><button type="button" class="finder-quick-register-btn" data-detail-register-key="${safe(c.key)}">${already?'＋1枚追加':'+ 詳細登録'}</button></div></article>`;
   }).join('');
   const pageButtons=[];
   pageButtons.push(`<button type="button" class="page-btn" data-page="${finderPage-1}" ${finderPage<=1?'disabled':''} aria-label="前のページ">‹</button>`);
