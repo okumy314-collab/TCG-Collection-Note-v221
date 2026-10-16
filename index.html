@@ -765,7 +765,7 @@ header.app-header p{display:none!important}
 .finder-market-tools label{font-size:11px;line-height:1.2}
 @media(max-width:390px){.finder-count-toolbar{gap:4px}.finder-mini-view button{font-size:9px;padding:5px 6px}.finder-register-actions button{font-size:10px}}
 </style><style>
-/* v230: mobile-first market entry and compact view controls */
+/* v231: mobile-first market entry and compact view controls */
 .finder-market-tools{
   display:flex !important;
   flex-direction:column !important;
@@ -829,8 +829,8 @@ header.app-header p{display:none!important}
 @media(max-width:390px){.finder-market-tools{padding:8px !important}.finder-mini-view button{min-width:38px !important;padding:5px 7px !important}}
 </style>
 
-<style id="v230-compact-entry-fixes">
-/* v230: compact market entry, visible registration feedback, inline details */
+<style id="v231-compact-entry-fixes">
+/* v231: compact market entry, visible registration feedback, inline details */
 #finderResults .finder-market-tools{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:7px!important;padding:9px!important;margin-top:8px!important;background:#0d1827!important;border:1px solid #40536a!important;border-radius:12px!important}
 #finderResults .finder-market-tools label{display:flex!important;flex-direction:column!important;gap:4px!important;width:100%!important;margin:0!important;font-size:12px!important;line-height:1.3!important;color:#e5edf7!important;font-weight:700!important}
 #finderResults .finder-market-tools label input{display:block!important;width:100%!important;min-width:0!important;box-sizing:border-box!important;min-height:38px!important;padding:7px 10px!important;font-size:15px!important;line-height:1.2!important;border-radius:9px!important;background:#111f30!important;color:#f5f8fc!important;border:1px solid #52677f!important}
@@ -1700,7 +1700,7 @@ function renderFinder(){
     const already=c.source==='collection';
     const sameNameCount=sameNameCounts.get(normalizeSearch(c.name))||0;
     const sameNameHint=sameNameCount>1?`<small class="finder-same-name-hint">同名候補 ${sameNameCount}件：番号・レアリティ・収録商品を確認</small>`:'';
-    const marketQuery=[c.name,c.number].map(x=>String(x||'').trim()).filter(Boolean).join(' ');const rushDomain=c.game==='pokemon'?'https://www.cardrush-pokemon.jp/product-list':c.game==='onepiece'?'https://www.cardrush-op.jp/product-list':'https://www.cardrush.jp/product-list';const rushUrl=rushDomain+'?keyword='+encodeURIComponent(marketQuery);const surugayaUrl='https://www.suruga-ya.jp/search?search_word='+encodeURIComponent(marketQuery);return `<article class="finder-result-card ${finderViewMode==='compact'?'finder-result-compact':''}" data-result-key="${safe(c.key)}"><button type="button" class="finder-card-select ${c.key===finderSelectedKey?'selected':''}" data-finder-key="${safe(c.key)}" aria-label="${safe(c.name)}の詳細を選択">${finderViewMode==='images'?imageMarkup(c):''}<span class="finder-card-copy"><small class="finder-series-line">${safe(c.setName||'シリーズ未登録')}${c.number?' · '+safe(c.number):''}</small><strong>${safe(c.name)}</strong>${sameNameHint}<span class="rarity-pill ${c.rarity&&c.rarity!=='未確認'?'rarity-known':'rarity-unknown'}">${safe(c.rarity&&c.rarity!=='未確認'?rarityDisplayLabel(c.game,c.rarity):'レアリティ未確認')}</span>${finderPriceHtml(c)}</span></button><div class="finder-market-links"><a href="${rushUrl}" target="_blank" rel="noopener noreferrer">カードラッシュで検索 ↗</a><a href="${surugayaUrl}" target="_blank" rel="noopener noreferrer">駿河屋で検索 ↗</a></div><div class="finder-market-tools" data-market-tools="${safe(c.key)}"><label>販売相場（円）<input type="number" min="0" step="1" inputmode="numeric" aria-label="販売相場（円）" placeholder="金額を入力" data-market-sell="${safe(c.key)}"></label><label>買取相場（円）<input type="number" min="0" step="1" inputmode="numeric" aria-label="買取相場（円）" placeholder="金額を入力" data-market-buy="${safe(c.key)}"></label><label class="market-tools-store">店舗名<input type="text" maxlength="80" placeholder="カードラッシュ / カードバリュー" data-market-store="${safe(c.key)}"></label><button type="button" class="market-tools-save" data-market-save="${safe(c.key)}">相場を保存</button></div><div class="finder-qty" aria-label="登録する枚数"><button type="button" data-qty-delta="-1" data-qty-key="${safe(c.key)}" aria-label="${safe(c.name)}の枚数を減らす">−</button><output data-qty-value="${safe(c.key)}">${qty}</output><button type="button" data-qty-delta="1" data-qty-key="${safe(c.key)}" aria-label="${safe(c.name)}の枚数を増やす">＋</button></div><div class="finder-register-actions"><button type="button" class="finder-register-btn" data-register-key="${safe(c.key)}">${already?'＋1枚追加':'マイコレ登録'}</button><button type="button" class="finder-quick-register-btn" data-detail-register-key="${safe(c.key)}">${already?'＋1枚追加':'+ 詳細登録'}</button></div></article>`;
+    const marketQuery=[c.name,c.number].map(x=>String(x||'').trim()).filter(Boolean).join(' ');const rushDomain=c.game==='pokemon'?'https://www.cardrush-pokemon.jp/product-list':c.game==='onepiece'?'https://www.cardrush-op.jp/product-list':'https://www.cardrush.jp/product-list';const rushUrl=rushDomain+'?keyword='+encodeURIComponent(marketQuery);const surugayaUrl='https://www.suruga-ya.jp/search?search_word='+encodeURIComponent(marketQuery);return `<article class="finder-result-card ${finderViewMode==='compact'?'finder-result-compact':''}" data-result-key="${safe(c.key)}"><button type="button" class="finder-card-select ${c.key===finderSelectedKey?'selected':''}" data-finder-key="${safe(c.key)}" aria-label="${safe(c.name)}の詳細を選択">${finderViewMode==='images'?imageMarkup(c):''}<span class="finder-card-copy"><small class="finder-series-line">${safe(c.setName||'シリーズ未登録')}${c.number?' · '+safe(c.number):''}</small><strong>${safe(c.name)}</strong>${sameNameHint}<span class="rarity-pill ${c.rarity&&c.rarity!=='未確認'?'rarity-known':'rarity-unknown'}">${safe(c.rarity&&c.rarity!=='未確認'?rarityDisplayLabel(c.game,c.rarity):'レアリティ未確認')}</span>${finderPriceHtml(c)}</span></button><div class="finder-market-links"><a href="${rushUrl}" target="_blank" rel="noopener noreferrer">カードラッシュで検索 ↗</a><a href="${surugayaUrl}" target="_blank" rel="noopener noreferrer">駿河屋で検索 ↗</a></div><div class="finder-market-tools" data-market-tools="${safe(c.key)}"><label>販売相場<input type="number" min="0" step="1" inputmode="numeric" aria-label="販売相場" data-market-sell="${safe(c.key)}"></label><label>買取相場<input type="number" min="0" step="1" inputmode="numeric" aria-label="買取相場" data-market-buy="${safe(c.key)}"></label><label class="market-tools-store">店舗名<input type="text" maxlength="80" placeholder="カードラッシュ / カードバリュー" data-market-store="${safe(c.key)}"></label><button type="button" class="market-tools-save" data-market-save="${safe(c.key)}">相場を保存</button></div><div class="finder-qty" aria-label="登録する枚数"><button type="button" data-qty-delta="-1" data-qty-key="${safe(c.key)}" aria-label="${safe(c.name)}の枚数を減らす">−</button><output data-qty-value="${safe(c.key)}">${qty}</output><button type="button" data-qty-delta="1" data-qty-key="${safe(c.key)}" aria-label="${safe(c.name)}の枚数を増やす">＋</button></div><div class="finder-register-actions"><button type="button" class="finder-register-btn" data-register-key="${safe(c.key)}">${already?'＋1枚追加':'マイコレ登録'}</button><button type="button" class="finder-quick-register-btn" data-detail-register-key="${safe(c.key)}">${already?'＋1枚追加':'+ 詳細登録'}</button></div></article>`;
   }).join('');
   const pageButtons=[];
   pageButtons.push(`<button type="button" class="page-btn" data-page="${finderPage-1}" ${finderPage<=1?'disabled':''} aria-label="前のページ">‹</button>`);
@@ -3345,5 +3345,20 @@ catalogLoadPersisted();
  });
 })();
 
-</script></body></html>
+</script>
+<style id="v231-register-layout">
+/* v231: compact consistent market inputs and registration actions */
+.finder-market-tools label{font-size:11px!important;line-height:1.3!important;gap:4px!important}
+.finder-market-tools input{font-size:14px!important;min-height:38px!important;padding:7px 9px!important}
+.finder-market-tools .market-tools-save{font-size:12px!important;white-space:nowrap!important;padding:9px 8px!important;min-height:38px!important}
+.finder-register-actions{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:6px!important;width:100%!important}
+.finder-register-actions button{display:block!important;width:100%!important;min-width:0!important;box-sizing:border-box!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;word-break:keep-all!important;line-height:1.2!important;font-size:12px!important;padding:10px 4px!important;min-height:40px!important}
+.finder-register-btn{background:#79d5e2!important;color:#08202a!important;border:0!important;border-radius:8px!important;font-weight:800!important}
+.finder-quick-register-btn{background:#1b2a3d!important;color:#f2f6fc!important;border:1px solid #40546b!important;border-radius:8px!important;font-weight:750!important}
+.finder-inline-notice{display:none;margin:5px 0;padding:10px 14px;border-radius:10px;background:#d9fbef;color:#075b42;font-size:13px;font-weight:800;text-align:center;box-shadow:0 5px 22px #0005}
+.finder-inline-notice.is-visible{display:block;position:fixed;z-index:99999;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));width:max-content;max-width:calc(100vw - 32px);transform:translateX(-50%);animation:v231-pop .22s ease-out}
+@keyframes v231-pop{from{scale:.96;opacity:.5}to{scale:1;opacity:1}}
+</style>
+
+</body></html>
 <!-- v121: two-shop median pricing is cached locally for search results. -->
